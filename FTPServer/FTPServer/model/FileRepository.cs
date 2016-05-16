@@ -61,7 +61,18 @@ namespace FTPServer.model
         uint dwFileAttributes = NativeMethods.FILE_ATTRIBUTE.FILE_ATTRIBUTE_NORMAL;
         uint uFlags = (uint)(NativeMethods.SHGFI.SHGFI_TYPENAME | NativeMethods.SHGFI.SHGFI_USEFILEATTRIBUTES);
         private NativeMethods.SHFILEINFO info;
-        public Directory RootDirectory { get; set; }
+
+        private Directory _rootDirectory;
+        public Directory RootDirectory
+        {
+            get { return _rootDirectory; }
+            set
+            {
+                _rootDirectory = value;
+                FillDictionary();
+                SaveDictionaryToFile();
+            }
+        }
         private string FileName { get; }
 
         public FileRepository(string fileName, Directory rootDirectory)

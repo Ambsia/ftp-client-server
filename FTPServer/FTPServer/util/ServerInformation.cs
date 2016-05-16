@@ -21,6 +21,7 @@ namespace FTPServer.util
         public int ServerPortAddress { get;
             set; }
         public int ServerCapacity { get; set; }
+        public string DefaultDirectory { get; set; }
         public string CpuUsage { get; private set; }
         public string MemoryUsage { get; private set; }
         public string HddUsage { get; private set; }
@@ -53,6 +54,7 @@ namespace FTPServer.util
                     var serverInfo = JsonConvert.DeserializeObject<ServerInformation>(jsonString);
                     this.ServerPortAddress = serverInfo.ServerPortAddress;
                     this.ServerCapacity = serverInfo.ServerCapacity;
+                    this.DefaultDirectory = serverInfo.DefaultDirectory;
                     ConsoleBuffer.AddToStatusLog("Server settings loaded.");
                 }
             }
@@ -60,6 +62,8 @@ namespace FTPServer.util
             {
                 this.ServerPortAddress = 8080;
                 this.ServerCapacity = 20;
+                this.DefaultDirectory = @"C:\ftp_root";
+                Directory.CreateDirectory(@"C:\ftp_root");
                 ConsoleBuffer.AddToStatusLog("Server settings failed to load.");
             }
           

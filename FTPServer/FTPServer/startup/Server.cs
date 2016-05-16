@@ -19,13 +19,10 @@ namespace FTPServer.startup
         static void Main(string[] args)
         {
             UserHandler userHandler = new UserHandler(Environment.CurrentDirectory + "\\userinfo.dat", Environment.CurrentDirectory + "\\admindata.dat");
-            DirectoryInfo dirInfo = new DirectoryInfo("main_dir");
-            DirectoryHandler directoryHandler =
-                new DirectoryHandler(new FileRepository("directory_info.json",new Directory(
-                    dirInfo.Name,
-                    dirInfo.FullName,
-                    new List<Client>(userHandler.AdminClientele.RegisteredUsers.Keys.ToList().Select(key => new Client(key))), 
-                    new Client(userHandler.AdminClientele.RegisteredUsers.ElementAt(0).Value.Username))));
+
+            //userHandler.AdminClientele.TryAdd(new ClientInformation("Alex", "pass"));
+            //userHandler.Clientele.TryAdd(new ClientInformation("Alex", "pass"));
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             FrmServerAuth frmServerAuth = new FrmServerAuth(userHandler.AdminClientele)
@@ -41,7 +38,7 @@ namespace FTPServer.startup
                 switch (dialogResult)
                 {
                     case DialogResult.OK:
-                        Application.Run(new ServerControlPanel(new ServerController(userHandler,directoryHandler))
+                        Application.Run(new ServerControlPanel(new ServerController(userHandler))
                         {
                             StartPosition = FormStartPosition.Manual,
                             Location = new Point(frmServerAuth.Location.X,frmServerAuth.Location.Y)

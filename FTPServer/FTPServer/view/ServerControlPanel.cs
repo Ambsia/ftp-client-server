@@ -21,6 +21,13 @@ namespace FTPServer.view
         protected virtual void OnSettingsChanged(ServerSettingEventArgs serverSettingEventArgs)
         {
             _serverController.StatusHandler.SettingHandler.ServerSettingChangedEventHandler?.Invoke(this, serverSettingEventArgs);
+            //create new directory if there is one..
+            DirectoryInfo dirInfo = new DirectoryInfo(this._serverController.StatusHandler.ServerInformation.DefaultDirectory);
+            Directory directory = new Directory(
+                dirInfo.Name, dirInfo.FullName,
+                this._serverController.DirectoryHandler.FileRepository.RootDirectory.PermittedUsers,
+                this._serverController.DirectoryHandler.FileRepository.RootDirectory.DirectoryOwner);
+            this._serverController.DirectoryHandler.FileRepository.RootDirectory = directory;
         }
 
         private readonly ServerController _serverController;
@@ -52,6 +59,7 @@ namespace FTPServer.view
             this.btnEditAdmin.Click += _serverController.UserHandler.EditClient;
             txtPort.Text = _serverController.StatusHandler.ServerInformation.ServerPortAddress.ToString();
             txtCapacity.Text = _serverController.StatusHandler.ServerInformation.ServerCapacity.ToString();
+            txtDefaultFolder.Text = _serverController.StatusHandler.ServerInformation.DefaultDirectory;
             treeView1.NodeMouseClick += TreeView1_NodeMouseClick;
 
             btnPushSettings.Click += BtnHandleSettingRequest;
@@ -78,7 +86,14 @@ namespace FTPServer.view
             string buttonName = ((Button) sender).Name;
             try
             {
-                OnSettingsChanged(new ServerSettingEventArgs(Int32.Parse(txtPort.Text), (Int32.Parse(txtCapacity.Text) < 0 ? 0 : Int32.Parse(txtCapacity.Text)), buttonName == "btnSaveSettings"));
+                OnSettingsChanged(
+                    new ServerSettingEventArgs(
+                        Int32.Parse(txtPort.Text), 
+                        (Int32.Parse(txtCapacity.Text) < 0 ? 0 : Int32.Parse(txtCapacity.Text)), 
+                        buttonName == "btnSaveSettings", 
+                        System.IO.Directory.Exists(txtDefaultFolder.Text) ? txtDefaultFolder.Text : @"c:\ftp_root")
+               
+                     );
             }
             catch (Exception)
             {
@@ -114,7 +129,7 @@ namespace FTPServer.view
                 .ToList()
                 .ForEach(control => control.Enabled = !_serverController.StatusHandler.ServerListener.IsActive());
         }
-     
+
         private void FrmServerControlPanel_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (!_serverController.StatusHandler.ServerListener.IsActive()) return;

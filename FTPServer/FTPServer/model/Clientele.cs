@@ -56,6 +56,8 @@ namespace FTPServer.model
             catch (Exception e)
             {
                 ConsoleBuffer.AddToActionLog("Exeception Occured, could not load file." + e.Message);
+                ConsoleBuffer.AddToActionLog("Attemtping to fix error.");
+                SaveDictionaryToFile();
             }
         }
 

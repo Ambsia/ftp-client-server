@@ -23,10 +23,7 @@ namespace FTPServer.controller
 
         private void PushSettingsToServer(object sender, ServerSettingEventArgs eventArgs)
         {
-            //used to check if the newly set port is available or can be used,
-            //prevents crashes by simulating a server startup in a safe environment 
             TcpListener testListener;
-            
             try
             {
                 testListener = new TcpListener(ServerInformation.GetIpAddress(), eventArgs.Port);
@@ -34,6 +31,7 @@ namespace FTPServer.controller
                 testListener.Stop();
                 _serverInformation.ServerPortAddress = eventArgs.Port;
                 _serverInformation.ServerCapacity = eventArgs.Capacity;
+                _serverInformation.DefaultDirectory = eventArgs.DefaultDirectory;
                 if (eventArgs.Saving)
                 {
                     _serverInformation.SaveServerSettings();

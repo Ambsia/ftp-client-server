@@ -102,6 +102,8 @@
             this.btnRestart = new System.Windows.Forms.Button();
             this.btnStart = new System.Windows.Forms.Button();
             this.tbHolder = new System.Windows.Forms.TabControl();
+            this.txtDefaultFolder = new System.Windows.Forms.TextBox();
+            this.lblDefault = new System.Windows.Forms.Label();
             this.tpSettings.SuspendLayout();
             this.panel9.SuspendLayout();
             this.panel10.SuspendLayout();
@@ -153,6 +155,8 @@
             // 
             // panel9
             // 
+            this.panel9.Controls.Add(this.txtDefaultFolder);
+            this.panel9.Controls.Add(this.lblDefault);
             this.panel9.Controls.Add(this.btnPushSettings);
             this.panel9.Controls.Add(this.txtCapacity);
             this.panel9.Controls.Add(this.txtPort);
@@ -916,6 +920,24 @@
             this.tbHolder.Size = new System.Drawing.Size(820, 402);
             this.tbHolder.TabIndex = 0;
             // 
+            // txtDefaultFolder
+            // 
+            this.txtDefaultFolder.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtDefaultFolder.Location = new System.Drawing.Point(117, 102);
+            this.txtDefaultFolder.Name = "txtDefaultFolder";
+            this.txtDefaultFolder.Size = new System.Drawing.Size(235, 24);
+            this.txtDefaultFolder.TabIndex = 11;
+            // 
+            // lblDefault
+            // 
+            this.lblDefault.AutoSize = true;
+            this.lblDefault.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblDefault.Location = new System.Drawing.Point(6, 105);
+            this.lblDefault.Name = "lblDefault";
+            this.lblDefault.Size = new System.Drawing.Size(104, 18);
+            this.lblDefault.TabIndex = 12;
+            this.lblDefault.Text = "Default Folder:";
+            // 
             // ServerControlPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1032,5 +1054,7 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox txtCapacity;
         private System.Windows.Forms.Label label28;
+        private System.Windows.Forms.TextBox txtDefaultFolder;
+        private System.Windows.Forms.Label lblDefault;
     }
 }

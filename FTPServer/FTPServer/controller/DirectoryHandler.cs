@@ -17,7 +17,6 @@ namespace FTPServer.controller
             this.FileRepository = fileRepository;
         }
 
-        //future development, could allow server administrators to manage the ftp directory
         public void CreateNewDirectory(FTPLibrary.Directory newDirectory)
         {
             

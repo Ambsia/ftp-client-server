@@ -13,11 +13,12 @@ namespace FTPServer.controller
 
         public DirectoryHandler DirectoryHandler { get; }
 
-        public ServerController(UserHandler userHandler, DirectoryHandler directoryHandler)
+        public ServerController(UserHandler userHandler)
         {
             this.UserHandler = userHandler;
-            this.DirectoryHandler = directoryHandler;
-            this.StatusHandler = new ServerHandler(UserHandler, DirectoryHandler);
+            this.StatusHandler = new ServerHandler(UserHandler);
+            this.DirectoryHandler = StatusHandler.DirectoryHandler;
+
         }
     }
 }

@@ -12,11 +12,14 @@ namespace FTPServer.model
         public int Port { get; }
         public int Capacity { get; }
         public bool Saving { get; }
-        public ServerSettingEventArgs(int port, int capacity, bool saving)
+        public string DefaultDirectory { get; }
+        public ServerSettingEventArgs(int port, int capacity, bool saving, string directory)
         {
             this.Port = port;
             this.Capacity = capacity;
             this.Saving = saving;
+            this.DefaultDirectory = directory;
+
         }
     }
 

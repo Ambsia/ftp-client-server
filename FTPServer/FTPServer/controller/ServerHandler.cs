@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Configuration;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Net.Sockets;
 using System.Security.Policy;
@@ -11,7 +12,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using FTPServer.util;
 using System.Windows.Forms;
+using FTPLibrary;
 using FTPServer.model;
+using Directory = FTPLibrary.Directory;
 
 namespace FTPServer.controller
 {
@@ -23,14 +26,22 @@ namespace FTPServer.controller
         public SettingHandler SettingHandler { get; }
         public UserHandler UserHandler { get; }
         public DirectoryHandler DirectoryHandler { get; }
-        public ServerHandler(UserHandler userHandler, DirectoryHandler directoryHandler)
+
+        public ServerHandler(UserHandler userHandler)
         {
             this.ServerInformation = new ServerInformation();
             ServerInformation.LoadServerSettings();
             this.SettingHandler = new SettingHandler(ServerInformation);
             this.UserHandler = userHandler;
-            this.DirectoryHandler = directoryHandler;
-            this.ServerListener = new ServerListener(ServerInformation, userHandler.Clientele, directoryHandler.FileRepository);
+
+            DirectoryInfo dirInfo = new DirectoryInfo(ServerInformation.DefaultDirectory);
+            this.DirectoryHandler = new DirectoryHandler(new FileRepository("directory_info.json", new Directory(
+                dirInfo.Name,
+                dirInfo.FullName,
+                new List<Client>(userHandler.AdminClientele.RegisteredUsers.Keys.ToList().Select(key => new Client(key))),
+                new Client(userHandler.AdminClientele.RegisteredUsers.ElementAt(0).Value.Username))));
+
+            this.ServerListener = new ServerListener(ServerInformation, userHandler.Clientele, DirectoryHandler.FileRepository);
         }
 
         public void InitiateServer(object sender, DoWorkEventArgs e)
@@ -47,7 +58,6 @@ namespace FTPServer.controller
             ServerListener.StopServer();
         }
 
-        //updates information 
         public void UpdateServerInformation()
         {
             if (ControlCollection == null || ServerListener.Clientele == null) return;
